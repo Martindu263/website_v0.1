@@ -46,7 +46,7 @@ class ChangePasswordForm(FlaskForm):
         DataRequired(), EqualTo('password2', message='Passwords must match.')])
     password2 = PasswordField('请再次输入密码',
                               validators=[DataRequired()])
-    submit = SubmitField('Update Password')
+    submit = SubmitField('更新密码')
 
 
 class PasswordResetRequestForm(FlaskForm):
@@ -63,10 +63,10 @@ class PasswordResetForm(FlaskForm):
 
 
 class ChangeEmailForm(FlaskForm):
-    email = StringField('New Email', validators=[DataRequired(), Length(1, 64),
+    email = StringField('新的邮箱', validators=[DataRequired(), Length(1, 64),
                                                  Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Update Email Address')
+    password = PasswordField('升学内参登陆密码（不是邮箱的密码）', validators=[DataRequired()])
+    submit = SubmitField('更新我的邮箱')
 
     def validate_email(self, field):
         if User.query.filter_by(email=field.data.lower()).first():

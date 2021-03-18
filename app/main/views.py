@@ -202,7 +202,7 @@ def followers(username):
         error_out=False)
     follows = [{'user': item.follower, 'timestamp': item.timestamp}
                for item in pagination.items]
-    return render_template('followers.html', user=user, title="Followers of",
+    return render_template('followers.html', user=user, title="我的粉丝",
                            endpoint='.followers', pagination=pagination,
                            follows=follows)
 
@@ -219,7 +219,7 @@ def followed_by(username):
         error_out=False)
     follows = [{'user': item.followed, 'timestamp': item.timestamp}
                for item in pagination.items]
-    return render_template('followers.html', user=user, title="Followed by",
+    return render_template('followers.html', user=user, title="我关注了",
                            endpoint='.followed_by', pagination=pagination,
                            follows=follows)
 
