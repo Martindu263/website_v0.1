@@ -52,7 +52,7 @@ class EditProfileAdminForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    body = PageDownField('可以随时发布信息。', validators=[DataRequired()])
+    body = PageDownField('可以随时发布信息', validators=[DataRequired()])
     submit = SubmitField('发布')
 
 
