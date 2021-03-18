@@ -34,9 +34,9 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
-    TESTING = True
+#    TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') 
-    WTF_CSRF_ENABLED = False
+#    WTF_CSRF_ENABLED = False
 
 
 class ProductionConfig(Config):
@@ -48,5 +48,5 @@ config = {
     'testing': TestingConfig,
     'production': ProductionConfig,
 
-    'default': DevelopmentConfig
+    'default': TestingConfig
 }

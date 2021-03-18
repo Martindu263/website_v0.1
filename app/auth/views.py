@@ -31,14 +31,14 @@ def unconfirmed():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data.lower()).first()
+        user = User.query.filter_by(phonenumber=form.phonenumber.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
                 next = url_for('main.index')
             return redirect(next)
-        flash('Invalid email or password.')
+        flash('手机号码或密码错误。')
     return render_template('auth/login.html', form=form)
 
 
@@ -46,7 +46,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash('You have been logged out.')
+    flash('您已经退出登陆。')
     return redirect(url_for('main.index'))
 
 
@@ -54,15 +54,13 @@ def logout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(email=form.email.data.lower(),
-                    username=form.username.data,
-                    password=form.password.data)
+        user = User(username=form.username.data, phonenumber=form.phonenumber.data, email=form.email.data.lower(), isteacher=form.isteacher.data, password=form.password.data)
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()
-        send_email(user.email, 'Confirm Your Account',
+        send_email(user.email, '激活你的账号。',
                    'auth/email/confirm', user=user, token=token)
-        flash('A confirmation email has been sent to you by email.')
+        flash('一封确认邮件已经发送到您的邮箱，请注意查收，由于部分邮箱运营商策略问题，激活邮件可能会出现在垃圾箱中，如一直未收到，请与我们联系。')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
 
@@ -74,9 +72,9 @@ def confirm(token):
         return redirect(url_for('main.index'))
     if current_user.confirm(token):
         db.session.commit()
-        flash('You have confirmed your account. Thanks!')
+        flash('恭喜您，您的账户已经激活！')
     else:
-        flash('The confirmation link is invalid or has expired.')
+        flash('激活确认超时，请重新激活。')
     return redirect(url_for('main.index'))
 
 
@@ -86,7 +84,7 @@ def resend_confirmation():
     token = current_user.generate_confirmation_token()
     send_email(current_user.email, 'Confirm Your Account',
                'auth/email/confirm', user=current_user, token=token)
-    flash('A new confirmation email has been sent to you by email.')
+    flash('一封新的激活邮件已经发送到您的邮箱，请注意查收。 ')
     return redirect(url_for('main.index'))
 
 
