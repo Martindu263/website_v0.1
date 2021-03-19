@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% import "_macros.html" as macros %}
 
-{% block title %}Flasky - {{ user.username }}{% endblock %}
+{% block title %}升学内参 - {{ user.username }}{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
@@ -11,7 +11,7 @@
         <p>
             {% if user.name %}{{ user.name }}<br>{% endif %}
             {% if user.location %}
-                from <a href="http://maps.google.com/?q={{ user.location }}">{{ user.location }}</a><br>
+                发布位置→<a href="https://map.baidu.com/search/{{ user.location }}">{{ user.location }}</a>←点击位置查看地图<br>
             {% endif %}
         </p>
         {% endif %}
@@ -55,11 +55,13 @@
         </p>
     </div>
 </div>
+
 <h3>{{ user.username }}的发布：</h3>
 {% include '_posts.html' %}
 {% if pagination %}
 <div class="pagination">
     {{ macros.pagination_widget(pagination, '.user', username=user.username) }}
 </div>
+
 {% endif %}
 {% endblock %}

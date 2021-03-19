@@ -97,10 +97,10 @@ def change_password():
             current_user.password = form.password.data
             db.session.add(current_user)
             db.session.commit()
-            flash('Your password has been updated.')
+            flash('你的密码已变更成功。')
             return redirect(url_for('main.index'))
         else:
-            flash('Invalid password.')
+            flash('密码输入不正确，密码必须是包含大小写字母和数字的组合，不能使用特殊字符，长度小于20个字符。')
     return render_template("auth/change_password.html", form=form)
 
 
@@ -116,8 +116,7 @@ def password_reset_request():
             send_email(user.email, 'Reset Your Password',
                        'auth/email/reset_password',
                        user=user, token=token)
-        flash('An email with instructions to reset your password has been '
-              'sent to you.')
+        flash('一封重置密码的邮件已经发送到您注册的邮箱中，请注意查收。')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
 
@@ -130,7 +129,7 @@ def password_reset(token):
     if form.validate_on_submit():
         if User.reset_password(token, form.password.data):
             db.session.commit()
-            flash('Your password has been updated.')
+            flash('恭喜您，密码已经更新。')
             return redirect(url_for('auth.login'))
         else:
             return redirect(url_for('main.index'))
